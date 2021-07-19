@@ -74,6 +74,7 @@ class QuestionWithVotesSerializer(serializers.ModelSerializer):
 
 
 class PollDetailsSerializer(serializers.ModelSerializer):
+	author = serializers.HiddenField(default=serializers.CurrentUserDefault())
 	questions = QuestionWithVotesSerializer(many=True)
 
 	class Meta:

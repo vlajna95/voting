@@ -103,5 +103,5 @@ https://dp95.pythonanywhere.com/api/
 
 ## To do 
 
+- [x] A GUI app to consume the API → Basic version completed - it retrieves the polls, shows their questions and choices and includes the voting possibility. Still not completed (I'm planning to include more functionalities). 
 - [ ] Endpoints to directly access the questions and choices (I considered it unnecessary at this moment) 
-- [ ] A GUI app to consume the API (work in progress) 
