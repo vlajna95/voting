@@ -15,6 +15,15 @@ class QuestionSerializer(serializers.ModelSerializer):
 		model = Question
 		fields = ["id", "question_text", "choices"]
 
+	def create(self, validated_data):
+		if "choices" in validated_data:
+			choices_data = validated_data.pop("choices")
+			question = Question.objects.create(**validated_data)
+			for choice_data in choices_data:
+				choice = Choice.objects.create(question=question, **choice_data)
+			return question
+		return Question.objects.create(**validated_data)
+
 
 class PollSerializer(serializers.ModelSerializer):
 	author = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -22,7 +31,7 @@ class PollSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Poll
-		fields = "__all__"
+		fields = ["id", "title", "description", "questions", "author", "pub_date"]
 
 	def create(self, validated_data):
 		if "questions" in validated_data:
@@ -38,12 +47,11 @@ class PollSerializer(serializers.ModelSerializer):
 		return Poll.objects.create(**validated_data)
 
 
-# detailed
-
 class VoteSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Choice
-		fields = ["votes"]
+		fields = ["id", "question", "choice_text", "votes"] # ["votes"]
+		read_only = ["id", "choice_text", "question"]
 
 	def update(self, instance, validated_data):
 		instance.votes += 1
@@ -54,15 +62,15 @@ class VoteSerializer(serializers.ModelSerializer):
 class ChoiceWithVotesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Choice
-		fields = "__all__"
+		fields = ["id", "question", "choice_text", "votes"]
 
 
 class QuestionWithVotesSerializer(serializers.ModelSerializer):
-	choices = ChoiceWithVotesSerializer(many=True, required=False) # serializers.StringRelatedField(many=True, read_only=True)
+	choices = ChoiceWithVotesSerializer(many=True, required=False)
 
 	class Meta:
 		model = Question
-		fields = "__all__"
+		fields = ["id", "poll", "question_text", "choices"]
 
 
 class PollDetailsSerializer(serializers.ModelSerializer):
@@ -70,4 +78,4 @@ class PollDetailsSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Poll
-		fields = "__all__"
+		fields = ["id", "title", "description", "questions", "author", "pub_date"]
