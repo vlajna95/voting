@@ -94,6 +94,14 @@ Both the questions and the choices are optional. You can create a poll without q
 The same applies to the questions. You can create a poll with empty questions (without choices), and add some choices later with a PATCH request to the API. 
 
 
+## Test the API 
+
+You can test the API, it's live on the following URL: 
+
+https://dp95.pythonanywhere.com/api/ 
+
+
 ## To do 
 
-I may add endpoints to directly access the questions and choices, but I considered it unnecessary at this moment.
+- [ ] Endpoints to directly access the questions and choices (I considered it unnecessary at this moment) 
+- [ ] A GUI app to consume the API (work in progress) 
